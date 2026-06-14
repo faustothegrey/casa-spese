@@ -531,7 +531,7 @@ export default function Home() {
       <span className="w-14 text-xs text-gray-500 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-gray-800 truncate">{item.tx.descrizione}</div>
-        <div className="text-xs text-gray-400">{item.cls.categoria} · regola {item.cls.regolaId}</div>
+        <div className="text-xs text-gray-500">{item.cls.categoria} · regola {item.cls.regolaId}</div>
       </div>
       <span className="w-24 text-sm font-semibold text-gray-800 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
       <div className="w-[290px] flex justify-end gap-2 shrink-0">
@@ -556,7 +556,7 @@ export default function Home() {
       <span className="w-14 text-xs text-gray-500 shrink-0">{formatDate(o.dateStr).slice(0, 5)}</span>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-gray-800 truncate">{o.rec.nome}</div>
-        <div className="text-xs text-gray-400">
+        <div className="text-xs text-gray-500">
           {o.rec.categoria} · {o.rec.fonte === "contante" ? "contante" : "Nexi"} · ricorrenza {o.rec.id}
         </div>
       </div>
@@ -577,7 +577,7 @@ export default function Home() {
       <span className="w-14 text-xs text-gray-500 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-gray-800 truncate">{item.tx.descrizione}</div>
-        <div className="text-xs text-gray-400">
+        <div className="text-xs text-gray-500">
           {item.cls.regolaId === "—" ? "negozio mai visto" : `regola ${item.cls.regolaId}: lascia decidere a te`}
         </div>
       </div>
@@ -921,9 +921,9 @@ export default function Home() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4">
               {excluded.map((item) => (
                 <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-2 border-t border-gray-50 text-xs text-gray-500">
-                  <span className="w-14 shrink-0 text-gray-400">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
+                  <span className="w-14 shrink-0 text-gray-500">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
                   <span className="flex-1 truncate text-gray-700">{item.tx.descrizione}</span>
-                  <span className="font-mono text-gray-400">{item.cls.regolaId}</span>
+                  <span className="font-mono text-gray-500">{item.cls.regolaId}</span>
                   <span className="shrink-0 font-medium text-gray-600">{formatCurrency(item.tx.importo)}</span>
                   {item.cls.regolaId === "MANUALE" && (
                     <button
@@ -985,7 +985,7 @@ export default function Home() {
       )}
 
       {/* Footer trasparenza */}
-      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400 mt-6">
+      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 mt-6">
         <span>regole v{ruleSet?.baseVersion ?? "…"} rev {ruleSet?.revision ?? "…"} · ricorrenze v{recSet?.version ?? "…"}</span>
         <span>·</span>
         <span>ogni inserimento è l&apos;applicazione di una regola o ricorrenza</span>

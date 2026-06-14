@@ -29,7 +29,7 @@ import { Recurrence, Occorrenza, generaOccorrenze } from "@/lib/recurrences";
 type OpenItem = { tx: Transaction; cls: Classificazione };
 type RuleSet = { baseVersion: string; revision: number; updatedAt: string; rules: Rule[] };
 type RecurrenceSet = { version: string; revision: number; recurrences: Recurrence[] };
-type PeriodGroup = Period & { autos: OpenItem[]; dade: OpenItem[]; recs: Occorrenza[]; excl: OpenItem[] };
+type PeriodGroup = Period & { autos: OpenItem[]; dade: OpenItem[]; recs: Occorrenza[]; excl: OpenItem[]; done: OpenItem[] };
 
 // "DD-MM-YYYY" -> "YYYY-MM-DD" per ordinare cronologicamente
 const toSortKey = (dmy: string) => (dmy || "").split("-").reverse().join("-");
@@ -187,13 +187,14 @@ export default function Home() {
   }, [sheetData, sheetReady]);
 
   // Smista i movimenti applicando le REGOLE
-  const { autos, daDecidere, excluded, conflicts, alreadyCount } = useMemo(() => {
+  const { autos, daDecidere, excluded, conflicts, alreadyCount, done } = useMemo(() => {
     const autos: OpenItem[] = [];
     const daDecidere: OpenItem[] = [];
     const excluded: OpenItem[] = [];
+    const done: OpenItem[] = [];
     const conflicts: (OpenItem & { allMatches: string[] })[] = [];
     let alreadyCount = 0;
-    if (!ready) return { autos, daDecidere, excluded, conflicts, alreadyCount };
+    if (!ready) return { autos, daDecidere, excluded, conflicts, alreadyCount, done };
 
     const lookup = buildSheetLookup(sheetData!);
     const used = new Set<string>();
@@ -233,12 +234,13 @@ export default function Home() {
       }
       if (isInConti(t, lookup, used)) {
         alreadyCount++;
+        done.push({ tx: t, cls });
         continue;
       }
       if (cls.stato === "AUTO") autos.push({ tx: t, cls });
       else daDecidere.push({ tx: t, cls });
     }
-    return { autos, daDecidere, excluded, conflicts, alreadyCount };
+    return { autos, daDecidere, excluded, conflicts, alreadyCount, done };
   }, [transactions, sheetData, ready, ruleSet, oldestSheetPeriodKey, closedPeriods]);
 
   // Raggruppa per PERIODO (24→23), solo periodi APERTI; aggiunge le ricorrenze attese
@@ -249,7 +251,7 @@ export default function Home() {
     const ensure = (p: Period): PeriodGroup => {
       let g = map.get(p.key);
       if (!g) {
-        g = { ...p, autos: [], dade: [], recs: [], excl: [] };
+        g = { ...p, autos: [], dade: [], recs: [], excl: [], done: [] };
         map.set(p.key, g);
       }
       return g;
@@ -279,6 +281,11 @@ export default function Home() {
       if (!p || closedPeriods.has(p.key)) continue;
       ensure(p).excl.push(it);
     }
+    for (const it of done) {
+      const p = periodForDateStr(it.tx.dataValuta);
+      if (!p || closedPeriods.has(p.key)) continue;
+      ensure(p).done.push(it);
+    }
 
     // Ricorrenze: genera le attese nel periodo e proponi quelle non già nel foglio
     const occInSheet = (o: Occorrenza): boolean => {
@@ -300,7 +307,7 @@ export default function Home() {
       g.recs.sort((a, b) => a.dateStr.split("-").reverse().join().localeCompare(b.dateStr.split("-").reverse().join()));
     }
     return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
-  }, [transactions, autos, daDecidere, recSet, oldestSheetPeriodKey, closedPeriods, sheetData, ready, excluded]);
+  }, [transactions, autos, daDecidere, recSet, oldestSheetPeriodKey, closedPeriods, sheetData, ready, excluded, done]);
 
   const totalRecs = periods.reduce((s, p) => s + p.recs.length, 0);
 
@@ -577,8 +584,8 @@ export default function Home() {
       <span className="w-24 text-sm font-semibold text-gray-800 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
       <div className="w-[290px] flex justify-end gap-2 shrink-0">
         <button onClick={() => openCreateRuleFromTx(item.tx)} disabled={busy} className="w-[110px] text-center text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/50 rounded-lg py-1.5 hover:bg-amber-100/80 active:scale-[0.97] transition-all duration-200 disabled:opacity-40 shrink-0 cursor-pointer shadow-3xs">
-        Crea regola
-      </button>
+          Crea regola
+        </button>
         <button onClick={() => toggleIgnoreTransaction(item.tx, true)} disabled={busy} className="text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200/50 rounded-lg px-3 py-1.5 hover:bg-rose-100/80 hover:text-rose-800 active:scale-[0.97] transition-all duration-200 shrink-0 cursor-pointer shadow-3xs" title="Ignora questa specifica transazione">
           Ignora
         </button>
@@ -605,6 +612,27 @@ export default function Home() {
             Ripristina
           </button>
         )}
+      </div>
+    </div>
+  );
+
+  const renderDoneRow = (item: OpenItem) => (
+    <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 bg-gray-50/30 opacity-70">
+      <div className="w-5 h-5 flex items-center justify-center text-emerald-600 shrink-0 font-bold text-sm" title="Già nel foglio">
+        ✓
+      </div>
+      <span className="w-14 text-xs text-gray-400 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
+      <div className="flex-1 min-w-0">
+        <div className="text-sm font-medium text-gray-500 line-through truncate">{item.tx.descrizione}</div>
+        <div className="text-xs text-gray-400">
+          Già nel foglio · {item.cls.categoria} · regola {item.cls.regolaId}
+        </div>
+      </div>
+      <span className="w-24 text-sm font-semibold text-gray-400 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
+      <div className="w-[290px] flex justify-end gap-2 shrink-0">
+        <span className="text-xs font-semibold bg-gray-100 text-gray-500 border border-gray-200/50 rounded-lg px-3 py-1.5 shadow-3xs cursor-default">
+          Registrato
+        </span>
       </div>
     </div>
   );
@@ -786,6 +814,7 @@ export default function Home() {
               ...p.recs.map((o) => ({ kind: "rec" as const, item: null, occurrence: o, k: toSortKey(o.dateStr) })),
               ...p.dade.map((it) => ({ kind: "dade" as const, item: it, occurrence: null, k: toSortKey(it.tx.dataValuta) })),
               ...p.excl.map((it) => ({ kind: "excl" as const, item: it, occurrence: null, k: toSortKey(it.tx.dataValuta) })),
+              ...p.done.map((it) => ({ kind: "done" as const, item: it, occurrence: null, k: toSortKey(it.tx.dataValuta) })),
             ].sort((a, b) => a.k.localeCompare(b.k));
 
             const isCollapsed = !expandedPeriods[p.key];
@@ -823,6 +852,7 @@ export default function Home() {
                           if (e.kind === "rec" && e.occurrence) return renderRecRow(e.occurrence);
                           if (e.kind === "dade" && e.item) return renderDadeRow(e.item);
                           if (e.kind === "excl" && e.item) return renderExclRow(e.item);
+                          if (e.kind === "done" && e.item) return renderDoneRow(e.item);
                           return null;
                         })}
                       </div>

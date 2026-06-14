@@ -1,8 +1,24 @@
 {
   "baseVersion": "2026.06",
-  "revision": 2,
-  "updatedAt": "2026-06-14T06:35:00.000Z",
+  "revision": 6,
+  "updatedAt": "2026-06-14T07:50:57.189Z",
   "rules": [
+    {
+      "id": "U-4",
+      "keywords": [
+        "IDEA UOMO"
+      ],
+      "categoria": "—",
+      "stato": "ESCLUSA"
+    },
+    {
+      "id": "U-3",
+      "keywords": [
+        "RYANAIR"
+      ],
+      "categoria": "—",
+      "stato": "ESCLUSA"
+    },
     {
       "id": "X-01",
       "keywords": [
@@ -42,34 +58,10 @@
     {
       "id": "R-017",
       "keywords": [
-        "CONAD",
-        "EUROSPIN",
-        "ESSELUNGA",
-        "FAMILA",
-        "PAM ",
-        "PANORAMA",
-        "CARREFOUR",
-        "LIDL",
-        "PENNY",
-        "SUPERSTORE",
-        "DMS GROUP",
-        "TODIS",
-        "SIGMA",
-        "CRAI",
-        "UNICOOP FIRENZE - PISA",
-        "MACELLERIA",
-        "PANIFICIO",
-        "FORNO",
-        "GASTRONOMIA",
-        "ENOTECA",
-        "ORTOFRUTTA",
-        "FRUTTA",
-        "TENTAZIONI",
-        "ANGELICA",
-        "FOODERIA"
+        "CARTE DI DEBITO CONAD SAN MINIATO ITA"
       ],
-      "categoria": "Spese alimentari",
-      "stato": "AUTO"
+      "categoria": "—",
+      "stato": "ESCLUSA"
     },
     {
       "id": "R-019",
@@ -91,28 +83,6 @@
       ],
       "categoria": "Spese alimentari",
       "stato": "DA_DECIDERE"
-    },
-    {
-      "id": "R-031",
-      "keywords": [
-        "CDT TRATTA",
-        "AUTOSTRAD",
-        "TELEPASS",
-        "PEDAGGI",
-        "ALA ",
-        "METANO",
-        "BEYFIN",
-        "ENI ",
-        "TAMOIL",
-        "ESSO",
-        "AGIP",
-        "CARBURANT",
-        "BENZINA",
-        "DISTRIBUTORE",
-        "LAVANDERIA"
-      ],
-      "categoria": "Altro",
-      "stato": "AUTO"
     },
     {
       "id": "R-041",

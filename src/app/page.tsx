@@ -594,18 +594,18 @@ export default function Home() {
   );
 
   const renderExclRow = (item: OpenItem) => (
-    <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 bg-gray-50/50 opacity-60">
+    <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 bg-gray-50/30">
       <div className="w-5 h-5 flex items-center justify-center shrink-0">
         <span className="w-2 h-2 rounded-full bg-gray-400" />
       </div>
-      <span className="w-14 text-xs text-gray-400 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
+      <span className="w-14 text-xs text-gray-500 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
       <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-gray-500 line-through truncate">{item.tx.descrizione}</div>
-        <div className="text-xs text-gray-400">
+        <div className="text-sm font-medium text-gray-700 line-through truncate">{item.tx.descrizione}</div>
+        <div className="text-xs text-gray-500">
           {item.cls.regolaId === "MANUALE" ? "Ignorato manualmente" : `Esclusa da regola ${item.cls.regolaId}`}
         </div>
       </div>
-      <span className="w-24 text-sm font-semibold text-gray-500 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
+      <span className="w-24 text-sm font-semibold text-gray-600 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
       <div className="w-[290px] flex justify-end gap-2 shrink-0">
         {item.cls.regolaId === "MANUALE" && (
           <button onClick={() => toggleIgnoreTransaction(item.tx, false)} disabled={busy} className="text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/50 rounded-lg px-3 py-1.5 hover:bg-blue-100/80 active:scale-[0.97] transition-all duration-200 cursor-pointer shadow-3xs">
@@ -617,20 +617,20 @@ export default function Home() {
   );
 
   const renderDoneRow = (item: OpenItem) => (
-    <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 bg-gray-50/30 opacity-70">
+    <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 bg-emerald-50/10">
       <div className="w-5 h-5 flex items-center justify-center text-emerald-600 shrink-0 font-bold text-sm" title="Già nel foglio">
         ✓
       </div>
-      <span className="w-14 text-xs text-gray-400 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
+      <span className="w-14 text-xs text-gray-500 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
       <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-gray-500 line-through truncate">{item.tx.descrizione}</div>
-        <div className="text-xs text-gray-400">
+        <div className="text-sm font-medium text-gray-700 line-through truncate">{item.tx.descrizione}</div>
+        <div className="text-xs text-gray-500">
           Già nel foglio · {item.cls.categoria} · regola {item.cls.regolaId}
         </div>
       </div>
-      <span className="w-24 text-sm font-semibold text-gray-400 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
+      <span className="w-24 text-sm font-semibold text-gray-600 text-right shrink-0 font-mono pr-2">{formatCurrency(item.tx.importo)}</span>
       <div className="w-[290px] flex justify-end gap-2 shrink-0">
-        <span className="text-xs font-semibold bg-gray-100 text-gray-500 border border-gray-200/50 rounded-lg px-3 py-1.5 shadow-3xs cursor-default">
+        <span className="text-xs font-semibold bg-emerald-50/50 text-emerald-700 border border-emerald-200/40 rounded-lg px-3 py-1.5 shadow-3xs cursor-default">
           Registrato
         </span>
       </div>
@@ -914,17 +914,17 @@ export default function Home() {
           })()}
 
           {/* ESCLUSE */}
-          <button onClick={() => setShowExcluded((v) => !v)} className="text-xs text-gray-400 hover:text-gray-600 mb-2 hover:bg-gray-100 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer">
+          <button onClick={() => setShowExcluded((v) => !v)} className="text-xs text-gray-500 hover:text-gray-700 mb-2 hover:bg-gray-100 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer">
             {showExcluded ? "▾" : "▸"} {excluded.length} voci escluse da una regola
           </button>
           {showExcluded && (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4">
               {excluded.map((item) => (
-                <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-2 border-t border-gray-50 text-xs text-gray-400">
-                  <span className="w-14 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
-                  <span className="flex-1 truncate">{item.tx.descrizione}</span>
-                  <span className="font-mono">{item.cls.regolaId}</span>
-                  <span className="shrink-0">{formatCurrency(item.tx.importo)}</span>
+                <div key={txId(item.tx)} className="flex items-center gap-3 px-4 py-2 border-t border-gray-50 text-xs text-gray-500">
+                  <span className="w-14 shrink-0 text-gray-400">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
+                  <span className="flex-1 truncate text-gray-700">{item.tx.descrizione}</span>
+                  <span className="font-mono text-gray-400">{item.cls.regolaId}</span>
+                  <span className="shrink-0 font-medium text-gray-600">{formatCurrency(item.tx.importo)}</span>
                   {item.cls.regolaId === "MANUALE" && (
                     <button
                       onClick={() => toggleIgnoreTransaction(item.tx, false)}

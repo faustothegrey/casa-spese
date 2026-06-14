@@ -632,6 +632,7 @@ export default function Home() {
       <div className="w-[290px] flex justify-end gap-2 shrink-0">
         {/* Spazio vuoto per allineamento colonne */}
       </div>
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-emerald-500/50 pointer-events-none" />
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-emerald-500/50 pointer-events-none" />
     </div>
   );

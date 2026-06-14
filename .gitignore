@@ -46,3 +46,6 @@ next-env.d.ts
 # financial data and database
 data/transactions.json
 *.csv
+
+# crit review artifacts
+preview.html

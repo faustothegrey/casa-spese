@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "BeforeTool": [
+      {
+        "hooks": [
+          {
+            "command": "crit plan-hook",
+            "timeout": 345600000,
+            "type": "command"
+          }
+        ],
+        "matcher": "exit_plan_mode"
+      }
+    ]
+  }
+}

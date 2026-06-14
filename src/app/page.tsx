@@ -623,7 +623,7 @@ export default function Home() {
       </div>
       <span className="w-14 text-xs text-gray-500 shrink-0">{formatDate(item.tx.dataValuta).slice(0, 5)}</span>
       <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-gray-700 line-through truncate">{item.tx.descrizione}</div>
+        <div className="text-sm font-medium text-gray-700 truncate">{item.tx.descrizione}</div>
         <div className="text-xs text-gray-500">
           Già nel foglio · {item.cls.categoria} · regola {item.cls.regolaId}
         </div>

@@ -45,6 +45,8 @@ export default function Home() {
   const [recSet, setRecSet] = useState<RecurrenceSet | null>(null);
   const [showRules, setShowRules] = useState(false);
   const [showSheetFrame, setShowSheetFrame] = useState(false);
+  const [showCsvTable, setShowCsvTable] = useState(false);
+  const [csvSearch, setCsvSearch] = useState("");
   const [expandedPeriods, setExpandedPeriods] = useState<Record<string, boolean>>({});
 
   const [sheetData, setSheetData] = useState<string[][] | null>(null);
@@ -168,6 +170,18 @@ export default function Home() {
     for (const k of seen) if (!open.has(k)) closed.add(k);
     return closed;
   }, [sheetData, sheetReady]);
+
+  const filteredCsvTransactions = useMemo(() => {
+    if (!csvSearch) return transactions;
+    const q = csvSearch.toLowerCase();
+    return transactions.filter(
+      (t) =>
+        t.descrizione.toLowerCase().includes(q) ||
+        String(t.importo).includes(q) ||
+        t.dataValuta.includes(q) ||
+        t.dataContabile.includes(q)
+    );
+  }, [transactions, csvSearch]);
 
   // Trova il periodo più vecchio registrato nel foglio per stabilire la data di inizio
   const oldestSheetPeriodKey = useMemo(() => {
@@ -659,6 +673,9 @@ export default function Home() {
           <button onClick={() => setShowSheetFrame((v) => !v)} className="text-sm font-medium bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-2xs active:scale-[0.98] transition-all duration-200 cursor-pointer shadow-3xs">
             📊 Foglio Spese {showSheetFrame ? "▾" : "▸"}
           </button>
+          <button onClick={() => setShowCsvTable((v) => !v)} className="text-sm font-medium bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-2xs active:scale-[0.98] transition-all duration-200 cursor-pointer shadow-3xs">
+            📄 Estratto CSV {showCsvTable ? "▾" : "▸"}
+          </button>
           <button onClick={() => setShowRules((v) => !v)} className="text-sm font-medium bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-50 hover:border-gray-300 hover:shadow-2xs active:scale-[0.98] transition-all duration-200 cursor-pointer shadow-3xs">
             📖 Regole ({ruleSet?.rules.length ?? 0})
           </button>
@@ -697,6 +714,90 @@ export default function Home() {
               allowFullScreen
               loading="lazy"
             />
+          </div>
+        </div>
+      )}
+
+      {/* Visualizzatore CSV */}
+      {showCsvTable && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-5">
+          <div className="px-4 py-3 text-sm font-semibold text-gray-700 bg-gray-50 border-b border-gray-100 flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span>Transazioni Estratto CSV ({filteredCsvTransactions.length})</span>
+              {archive && (
+                <span className="text-xs font-normal text-gray-500">
+                  · file: {archive.name}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Cerca transazione..."
+                value={csvSearch}
+                onChange={(e) => setCsvSearch(e.target.value)}
+                className="text-xs bg-white border border-gray-200 rounded-lg px-3 py-1.5 w-[200px] outline-hidden focus:border-gray-300 focus:shadow-3xs transition-all"
+              />
+              {csvSearch && (
+                <button
+                  onClick={() => setCsvSearch("")}
+                  className="text-xs text-gray-500 hover:text-gray-700 font-medium"
+                >
+                  Pulisci
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="w-full max-h-[500px] overflow-y-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-gray-50/50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3">Data Cont.</th>
+                  <th className="px-4 py-3">Data Val.</th>
+                  <th className="px-4 py-3">Descrizione</th>
+                  <th className="px-4 py-3 text-right">Importo</th>
+                  <th className="px-4 py-3 text-right">Saldo</th>
+                  <th className="px-4 py-3 text-center">Stato</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50 text-sm">
+                {filteredCsvTransactions.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                      Nessuna transazione trovata.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredCsvTransactions.map((t) => {
+                    const id = txId(t);
+                    return (
+                      <tr key={id} className="hover:bg-gray-50/40 transition-colors">
+                        <td className="px-4 py-2 text-gray-500 whitespace-nowrap">{t.dataContabile}</td>
+                        <td className="px-4 py-2 text-gray-500 whitespace-nowrap">{t.dataValuta}</td>
+                        <td className="px-4 py-2 text-gray-800 font-medium">{t.descrizione}</td>
+                        <td className={`px-4 py-2 font-semibold font-mono text-right whitespace-nowrap ${t.importo < 0 ? 'text-rose-600' : 'text-emerald-600'}`}>
+                          {formatCurrency(t.importo)}
+                        </td>
+                        <td className="px-4 py-2 text-gray-600 font-mono text-right whitespace-nowrap">
+                          {t.saldo !== null ? formatCurrency(t.saldo) : "—"}
+                        </td>
+                        <td className="px-4 py-2 text-center whitespace-nowrap">
+                          {t.ignored ? (
+                            <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                              Ignorato
+                            </span>
+                          ) : (
+                            <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                              Attivo
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

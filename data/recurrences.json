@@ -1,0 +1,33 @@
+{
+  "version": "2026.06",
+  "revision": 0,
+  "updatedAt": "2026-06-14T05:16:05.290Z",
+  "recurrences": [
+    {
+      "id": "REC-katerina",
+      "nome": "Katerina",
+      "categoria": "Katerina",
+      "importo": 50,
+      "fonte": "contante",
+      "cadenza": {
+        "tipo": "settimanale",
+        "giorno": 3
+      },
+      "anticipa": "fausto",
+      "attiva": true
+    },
+    {
+      "id": "REC-internet",
+      "nome": "Internet",
+      "categoria": "Internet",
+      "importo": 43.07,
+      "fonte": "nexi",
+      "cadenza": {
+        "tipo": "mensile",
+        "giorno": 15
+      },
+      "anticipa": "fausto",
+      "attiva": true
+    }
+  ]
+}

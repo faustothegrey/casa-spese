@@ -1,0 +1,180 @@
+{
+  "baseVersion": "2026.06",
+  "revision": 2,
+  "updatedAt": "2026-06-14T06:35:00.000Z",
+  "rules": [
+    {
+      "id": "X-01",
+      "keywords": [
+        "COMMISSIONI",
+        "BOLLI",
+        "IMPOSTA DI BOLLO",
+        "CANONE",
+        "PRELIEVO",
+        "PRELEV",
+        "ACCR. STIPENDI",
+        "COMPETENZE",
+        "ACC.TD",
+        "NEG. OP.TITOLI",
+        "CEDOL",
+        "GIROCONTO",
+        "ESTINZIONE CONTO",
+        "POS CARTE CREDITO",
+        "UNICOOP SOVIGLIANA",
+        "UNICOOP EMPOLI",
+        "UNICOOP PONTEDERA",
+        "COOP LA RISORTA",
+        "COOP \"LA RISORTA\"",
+        "COOP ITALIA UNICOOP TI",
+        "UNICOOP FIRENZE        CASTELFRANCO"
+      ],
+      "categoria": "—",
+      "stato": "ESCLUSA"
+    },
+    {
+      "id": "R-001",
+      "keywords": [
+        "Imp.1.050,00"
+      ],
+      "categoria": "Affitto",
+      "stato": "DA_DECIDERE"
+    },
+    {
+      "id": "R-017",
+      "keywords": [
+        "CONAD",
+        "EUROSPIN",
+        "ESSELUNGA",
+        "FAMILA",
+        "PAM ",
+        "PANORAMA",
+        "CARREFOUR",
+        "LIDL",
+        "PENNY",
+        "SUPERSTORE",
+        "DMS GROUP",
+        "TODIS",
+        "SIGMA",
+        "CRAI",
+        "UNICOOP FIRENZE - PISA",
+        "MACELLERIA",
+        "PANIFICIO",
+        "FORNO",
+        "GASTRONOMIA",
+        "ENOTECA",
+        "ORTOFRUTTA",
+        "FRUTTA",
+        "TENTAZIONI",
+        "ANGELICA",
+        "FOODERIA"
+      ],
+      "categoria": "Spese alimentari",
+      "stato": "AUTO"
+    },
+    {
+      "id": "R-019",
+      "keywords": [
+        "RISTORANTE",
+        "PIZZ",
+        "TRATTORIA",
+        "OSTERIA",
+        "BAR ",
+        "CAFE",
+        "CAFFE",
+        "GELAT",
+        "HANGAR",
+        "STRAPIZZAMI",
+        "AUTOGRILL",
+        "LIDO",
+        "STABILIMENTO",
+        "NECCIO"
+      ],
+      "categoria": "Spese alimentari",
+      "stato": "DA_DECIDERE"
+    },
+    {
+      "id": "R-031",
+      "keywords": [
+        "CDT TRATTA",
+        "AUTOSTRAD",
+        "TELEPASS",
+        "PEDAGGI",
+        "ALA ",
+        "METANO",
+        "BEYFIN",
+        "ENI ",
+        "TAMOIL",
+        "ESSO",
+        "AGIP",
+        "CARBURANT",
+        "BENZINA",
+        "DISTRIBUTORE",
+        "LAVANDERIA"
+      ],
+      "categoria": "Altro",
+      "stato": "AUTO"
+    },
+    {
+      "id": "R-041",
+      "keywords": [
+        "ENEL",
+        "SERVIZIO ELETTRICO",
+        "LUCE",
+        "ACEA",
+        "A2A"
+      ],
+      "categoria": "Luce",
+      "stato": "DA_DECIDERE"
+    },
+    {
+      "id": "R-042",
+      "keywords": [
+        "GAS",
+        "ENGIE",
+        "EDISON"
+      ],
+      "categoria": "Gas",
+      "stato": "DA_DECIDERE"
+    },
+    {
+      "id": "R-043",
+      "keywords": [
+        "ACQUA",
+        "GEAL",
+        "ACQUEDOTTO",
+        "PUBLIACQUA",
+        "ASA "
+      ],
+      "categoria": "Acqua",
+      "stato": "DA_DECIDERE"
+    },
+    {
+      "id": "R-045",
+      "keywords": [
+        "INTERNET",
+        "FASTWEB",
+        "VODAFONE",
+        "WIND",
+        "ILIAD",
+        "TISCALI"
+      ],
+      "categoria": "Internet",
+      "stato": "DA_DECIDERE"
+    },
+    {
+      "id": "R-051",
+      "keywords": [
+        "BRICOMAN",
+        "LEROY",
+        "IKEA",
+        "BRICO",
+        "FERRAMENTA",
+        "ECO CLIMA",
+        "FARMACIA",
+        "PARAFARMACIA"
+      ],
+      "categoria": "Altro",
+      "stato": "DA_DECIDERE"
+    }
+  ]
+}
